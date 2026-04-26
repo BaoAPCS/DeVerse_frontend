@@ -7,7 +7,6 @@ import {
   Bell,
   MessageCircle,
   Bookmark,
-  Search,
   LoaderCircle,
   Image as ImageIcon,
   Heart,
@@ -15,6 +14,7 @@ import {
   Trash2,
   Send
 } from 'lucide-react'
+import Header from '@/components/header'
 import CreatePostBox from './components/CreatePostBox'
 import PostList from './components/PostList'
 
@@ -70,7 +70,7 @@ export default function FeedPage() {
           headers: { Authorization: `Bearer ${token}` },
         })
 
-        if (!res.ok) throw new Error('Failed to fetch user')
+        if (!res.ok) return;
 
         const userData = await res.json()
         setUser(userData)
@@ -548,11 +548,41 @@ export default function FeedPage() {
     }
   }
 
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return
+    const file = e.target.files[0]
+
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const res = await fetch(`${API_URL}/users/upload-avatar`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${getToken()}` },
+        body: formData,
+      })
+
+      if (!res.ok) {
+        const errText = await res.text()
+        alert(`Failed to upload avatar: ${errText}`)
+        return
+      }
+
+      const updatedUser = await res.json()
+      setUser(updatedUser)
+    } catch (error) {
+      console.error('Error uploading avatar:', error)
+      alert('Error uploading avatar')
+    } finally {
+      if (fileRef.current) fileRef.current.value = ''
+    }
+  }
+
   const removePostImage = (index: number) => {
     setPostImages(prev => prev.filter((_, i) => i !== index))
   }
 
-  const getImageUrl = (path: string) => {
+  const getImageUrl = (path?: string) => {
     if (!path) return ''
     if (path.startsWith('http')) return path
     return `${API_URL}${path}`
@@ -571,48 +601,16 @@ export default function FeedPage() {
     <div className="min-h-screen bg-gray-50">
 
       {/* HEADER */}
-      <div className="flex items-center justify-between px-6 py-3 bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
-        <h1 className="text-2xl font-black tracking-tight text-green-600">DeVerse</h1>
-
-        <div className="relative hidden md:block">
-          <div className="flex items-center bg-gray-100 px-4 py-2 rounded-full w-80 focus-within:ring-2 focus-within:ring-green-100 transition">
-            <Search size={18} className="text-gray-500 mr-2" />
-            <input
-              placeholder="Search users..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="bg-transparent outline-none w-full text-sm"
-            />
-          </div>
-        </div>
-
-        <div className="relative flex items-center gap-4">
-          <img
-            src={getImageUrl(user?.avatar) || '/avatar.png'}
-            alt="profile"
-            onClick={() => setShowMenu(!showMenu)}
-            className="h-10 w-10 rounded-full object-cover cursor-pointer border-2 border-gray-200 hover:border-green-500 transition"
-          />
-
-          {showMenu && (
-            <div className="absolute right-0 top-12 mt-2 w-56 bg-white shadow-2xl rounded-xl p-2 z-50 border border-gray-100">
-              <div className="px-3 py-3 border-b border-gray-100 mb-2">
-                <p className="text-sm font-bold truncate text-gray-800">{user?.name}</p>
-                <p className="text-xs text-gray-500 truncate">{user?.email}</p>
-              </div>
-              <button
-                onClick={() => {
-                  localStorage.removeItem('token')
-                  router.push('/auth/login')
-                }}
-                className="w-full text-left px-3 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50 rounded-lg cursor-pointer transition"
-              >
-                Log Out
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
+      <Header
+        user={user}
+        query={query}
+        setQuery={setQuery}
+        showMenu={showMenu}
+        setShowMenu={setShowMenu}
+        fileRef={fileRef}
+        handleAvatarChange={handleAvatarChange}
+        getImageUrl={getImageUrl}
+      />
 
       {/* MAIN LAYOUT */}
       <div className="max-w-7xl mx-auto grid grid-cols-12 gap-6 px-4 md:px-6 mt-6 pb-12">

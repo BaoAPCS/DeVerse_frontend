@@ -40,7 +40,7 @@ export default function CreatePostBox({
                   />
                   <button
                     onClick={() => removePostImage(idx)}
-                    className="absolute top-2 right-2 bg-gray-900/70 hover:bg-gray-900 text-white p-1.5 rounded-full backdrop-blur-sm transition opacity-0 group-hover:opacity-100"
+                    className="absolute top-2 right-2 bg-gray-900/70 hover:bg-gray-900 cursor-pointer text-white p-1.5 rounded-full backdrop-blur-sm transition opacity-0 group-hover:opacity-100"
                   >
                     <svg className="w-3 h-3" />
                   </button>
@@ -53,7 +53,7 @@ export default function CreatePostBox({
             <div className="flex gap-2">
               <button
                 onClick={() => postImageRef.current?.click()}
-                className="text-green-600 hover:bg-green-50 p-2 rounded-full transition"
+                className="text-green-600 cursor-pointer hover:bg-green-50 p-2 rounded-full transition"
                 title="Add Photo"
               >
                 <ImageIcon size={20} />
@@ -71,7 +71,7 @@ export default function CreatePostBox({
             <button
               onClick={handleCreatePost}
               disabled={isPosting || (!postText.trim() && postImages.length === 0)}
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full font-bold text-sm transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm shadow-green-200"
+              className="bg-green-600 hover:bg-green-700 cursor-pointer text-white px-6 py-2 rounded-full font-bold text-sm transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm shadow-green-200"
             >
               {isPosting ? <><LoaderCircle className="animate-spin" size={16} /> Posting</> : 'Post'}
             </button>
