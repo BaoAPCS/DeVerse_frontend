@@ -78,7 +78,7 @@ export default function ResetPassword() {
 
           {error && <p className="text-red-500 text-sm">{error}</p>}
 
-          <button className="w-full bg-black text-white py-2 rounded">
+          <button className="w-full bg-black text-white py-2 rounded cursor-pointer">
             {loading ? 'Loading...' : 'Reset Password'}
           </button>
         </form>

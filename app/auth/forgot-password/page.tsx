@@ -81,7 +81,7 @@ function ForgotPassword() {
             <button
               type="submit"
               disabled={loading}
-              className="flex h-10 w-full items-center justify-center rounded-lg bg-neutral-800 text-white hover:bg-neutral-700 disabled:bg-gray-300"
+              className="flex h-10 w-full items-center justify-center rounded-lg bg-neutral-800 text-white cursor-pointer hover:bg-neutral-700 disabled:bg-gray-300"
             >
               {loading ? <LoaderCircle className="animate-spin" size={20} /> : 'Reset Password'}
             </button>

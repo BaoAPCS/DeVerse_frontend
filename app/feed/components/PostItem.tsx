@@ -41,7 +41,7 @@ export default function PostItem({
         {post.author?._id === user?._id && (
           <button
             onClick={() => handleDeletePost(post._id)}
-            className="text-gray-400 hover:text-red-500 hover:bg-red-50 p-2 rounded-full transition"
+            className="text-gray-400 hover:text-red-500 hover:bg-red-50 p-2 rounded-full transition cursor-pointer"
           >
             <Trash2 size={18} />
           </button>
@@ -69,7 +69,7 @@ export default function PostItem({
         <div className="flex items-center gap-6 text-gray-500">
           <button
             onClick={() => handleToggleLike(post._id)}
-            className={`flex items-center gap-2 transition group ${post.isLiked ? 'text-red-500' : 'hover:text-red-500'}`}
+            className={`flex items-center gap-2 cursor-pointer transition group ${post.isLiked ? 'text-red-500' : 'hover:text-red-500'}`}
           >
             <div className={`p-2 rounded-full transition duration-300 ${post.isLiked ? 'bg-red-50 scale-110' : 'group-hover:bg-red-50 hover:scale-110'}`}>
               <Heart size={20} className={post.isLiked ? 'fill-current' : ''} />
@@ -81,7 +81,7 @@ export default function PostItem({
 
           <button
             onClick={() => toggleComments(post._id)}
-            className="flex items-center gap-2 hover:text-blue-500 transition group"
+            className="flex items-center gap-2 cursor-pointer hover:text-blue-500 transition group"
           >
             <div className="p-2 rounded-full group-hover:bg-blue-50 transition duration-300 hover:scale-110">
               <MessageCircle size={20} className={expandedComments.has(post._id) ? 'fill-current text-blue-500' : ''} />
@@ -114,7 +114,7 @@ export default function PostItem({
               <button
                 onClick={() => handlePostComment(post._id)}
                 disabled={!commentInputs[post._id]?.trim()}
-                className="absolute right-2 top-1.5 p-1 text-green-600 disabled:text-gray-300 transition hover:scale-110"
+                className="absolute right-2 top-1.5 p-1 text-green-600 cursor-pointer disabled:text-gray-300 transition hover:scale-110"
               >
                 <Send size={16} />
               </button>
@@ -141,7 +141,7 @@ export default function PostItem({
                   {comment.author?._id === user?._id && (
                     <button
                       onClick={() => handleDeleteComment(post._id, comment._id)}
-                      className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition mt-2 p-1"
+                      className="text-gray-400 hover:text-red-500 opacity-0 cursor-pointer group-hover:opacity-100 transition mt-2 p-1"
                     >
                       <Trash2 size={14} />
                     </button>
